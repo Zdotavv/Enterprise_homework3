@@ -6,9 +6,6 @@ import com.zdotavv.enterprise_homework3.model.Cart;
 import com.zdotavv.enterprise_homework3.model.Product;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Service

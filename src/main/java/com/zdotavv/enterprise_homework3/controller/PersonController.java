@@ -1,6 +1,7 @@
 package com.zdotavv.enterprise_homework3.controller;
 
 import com.zdotavv.enterprise_homework3.collection.exceptions.NotFoundException;
+import com.zdotavv.enterprise_homework3.model.Cart;
 import com.zdotavv.enterprise_homework3.model.Person;
 import com.zdotavv.enterprise_homework3.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;

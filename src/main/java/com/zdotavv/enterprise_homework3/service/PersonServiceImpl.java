@@ -18,14 +18,6 @@ public class PersonServiceImpl implements PersonService {
         person.setId(++PEOPLE_COUNT);
         PersonCollection.persons.add(person);
         return person;
-//        Person newPerson=new Person();
-//        newPerson.setFirstName(person.getFirstName());
-//        newPerson.setLastName(person.getLastName());
-//        newPerson.setEmail(person.getEmail());
-//
-//        personCollection.persons.add(person);
-//
-//        return newPerson.getFirstName();
     }
 
     @Override
@@ -40,7 +32,7 @@ public class PersonServiceImpl implements PersonService {
             }
         }
         return person;
-//return personCollection.persons.stream().filter(p-> Objects.equals(p.getId(), id)).findAny().get();
+
     }
     @Override
     public void deletePerson(Integer id) throws NotFoundException{
