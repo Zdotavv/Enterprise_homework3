@@ -24,6 +24,7 @@ Update product
 PUT
 http://localhost:8081/product/update
 
+Get all products
 GET
 http://localhost:8081/product/all
 
