@@ -49,6 +49,8 @@ public class PersonServiceImpl implements PersonService {
             if (tmp.getId().equals(person.getId())) {
                 tmp.setId(person.getId());
                 tmp.setFirstName(person.getFirstName());
+                tmp.setLastName(person.getLastName());
+                tmp.setEmail(person.getEmail());
                 newPerson = tmp;
             }
             else {

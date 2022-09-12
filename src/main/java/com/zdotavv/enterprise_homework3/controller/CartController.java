@@ -12,7 +12,7 @@ import java.util.Set;
 @RestController
 public class CartController {
     @Autowired
-    CartService cartService;
+    private CartService cartService;
 
     @PostMapping("/create")
     public Cart createCart(@RequestBody Cart cart) {
