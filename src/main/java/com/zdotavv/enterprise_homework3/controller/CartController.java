@@ -1,64 +1,63 @@
 package com.zdotavv.enterprise_homework3.controller;
 
+import com.zdotavv.enterprise_homework3.dto.CartDto;
+import com.zdotavv.enterprise_homework3.exceptions.NotFoundException;
 import com.zdotavv.enterprise_homework3.model.Cart;
 import com.zdotavv.enterprise_homework3.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RequestMapping(path="/cart")
 @RestController
 public class CartController {
-    @Autowired
-    private CartService cartService;
 
-    @PostMapping("/create")
-    public Cart createCart(@RequestBody Cart cart) {
-        return cartService.createCart(cart);
+    private final CartService cartService;
+
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
     }
 
-    @PutMapping("/update")
+
+    @PostMapping("/create")
+    public Cart createCart(@RequestParam Integer id)throws NotFoundException {
+        return cartService.createCartByPersonId(id);
+    }
+
+    @PutMapping("/add")
     @ResponseStatus(HttpStatus.OK)
-    public Cart updateCart(@RequestBody Cart cart) {
-        return cartService.updateCart(cart);
+    public Cart addProductByProductIdAndCartId(@RequestBody CartDto cartDto) throws NotFoundException {
+        return cartService.addProductByProductIdAndCartId(cartDto.getIdProduct(), cartDto.getIdCart());
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCart(@RequestBody Cart cart) {
-        cartService.deleteCart(cart);
+    public Cart removeProductByProductIdAndCartId(@RequestBody CartDto cartDto) throws NotFoundException {
+        return cartService.removeProductByProductIdAndCartId(cartDto.getIdProduct(), cartDto.getIdCart());
     }
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Cart findById(@PathVariable Integer id) {
-        return cartService.getById(id);
+    @DeleteMapping("/{cartId}/clean")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeAllProductsFromCartById(@PathVariable Integer cartId) throws NotFoundException {
+        cartService.removeAllProductsFromCartById(cartId);
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public Set<Cart> getAll() {
-        return cartService.getAll();
+    public List<Cart> getAllByPersonId(@RequestParam Integer id) throws NotFoundException {
+        return cartService.getAllByPersonId(id);
     }
 
-    @PutMapping("/{id}/add/{idProduct}")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Cart addProduct(@PathVariable Integer id, @PathVariable Integer idProduct) {
-        return cartService.addProductToCart(id, idProduct);
+    public Cart getCartById(@RequestParam Integer idCart) throws NotFoundException {
+        return cartService.getCartById(idCart);
     }
 
-    @DeleteMapping("/{id}/delete/{idProduct}")
-    @ResponseStatus(HttpStatus.OK)
-    public Cart deleteProduct(@PathVariable Integer id, @PathVariable Integer idProduct) {
-        return cartService.deleteProductFromCart(id, idProduct);
-    }
-
-    @GetMapping("/price/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Double getPriceFromCart(@PathVariable int id) {
-        return cartService.getPriceInCard(id);
+    @DeleteMapping()
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeCartById(@RequestParam Integer idCart) throws NotFoundException {
+        cartService.removeCartById(idCart);
     }
 }
 

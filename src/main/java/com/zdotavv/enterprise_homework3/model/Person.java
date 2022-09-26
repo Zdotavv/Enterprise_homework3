@@ -1,8 +1,11 @@
 package com.zdotavv.enterprise_homework3.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -12,6 +15,9 @@ public class Person {
     private String firstName;
     private String lastName;
     private String email;
+
+    @JsonIgnore
+    private final List<Cart> carts = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

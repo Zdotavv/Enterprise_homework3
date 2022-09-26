@@ -1,53 +1,60 @@
 package com.zdotavv.enterprise_homework3.service;
 
 import com.zdotavv.enterprise_homework3.collection.ProductCollection;
+import com.zdotavv.enterprise_homework3.exceptions.NotFoundException;
 import com.zdotavv.enterprise_homework3.model.Product;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.Collection;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private static Integer PRODUCT_COUNT = 0;
+    private static Integer productCounter = 0;
+    private final ProductCollection productCollection;
+
+    public ProductServiceImpl(ProductCollection productCollection) {
+        this.productCollection = productCollection;
+    }
     @Override
     public Product createProduct(Product product) {
-        product.setId(++PRODUCT_COUNT);
-        ProductCollection.products.add(product);
+        product.setIdProduct(++productCounter);
+        productCollection.getProducts().put(product.getIdProduct(), product);
         return product;
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Product newProduct = new Product();
-        for (Product tmp : ProductCollection.products) {
-            if (tmp.getId().equals(product.getId())) {
-                tmp.setPrice(product.getPrice());
-                tmp.setName(product.getName());
-                newProduct = tmp;
-            }
+    public Product updateProduct(Integer idProduct, Product product)throws NotFoundException {
+        if (productCollection.getProducts().containsKey(idProduct)) {
+            Product tmp = productCollection.getProducts().get(idProduct);
+            tmp.setName(product.getName());
+            tmp.setPrice(product.getPrice());
+            return tmp;
+        } else {
+            throw new NotFoundException("Person with ID #" + idProduct + " is not found");
         }
-        return newProduct;
     }
 
     @Override
-    public void deleteProduct(Product product) {
-        ProductCollection.products.removeIf(tmp -> tmp.getId().equals(product.getId()));
-    }
-
-    @Override
-    public Product getById(Integer id) {
-        Product product = new Product();
-        for (Product tmp : ProductCollection.products) {
-            if (tmp.getId().equals(id)) {
-                product = tmp;
-            }
+    public void deleteProduct(Integer idProduct) throws NotFoundException {
+        if (productCollection.getProducts().containsKey(idProduct)) {
+            productCollection.getProducts().remove(idProduct);
+        } else {
+            throw new NotFoundException("Product with ID #" + idProduct + " is not found");
         }
-        return product;
     }
 
     @Override
-    public Set<Product> getAll() {
-        return ProductCollection.products;
+    public Product getById(Integer idProduct)throws NotFoundException  {
+        if (productCollection.getProducts().containsKey(idProduct)) {
+            return productCollection.getProducts().get(idProduct);
+        } else {
+            throw new NotFoundException("Product with ID #" + idProduct + " is not found");
+        }
+    }
+
+    @Override
+    public Collection<Product> getAllProducts() {
+        return productCollection.getProducts().values();
     }
 
 

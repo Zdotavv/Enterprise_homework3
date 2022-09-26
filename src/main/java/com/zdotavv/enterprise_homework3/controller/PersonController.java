@@ -1,7 +1,6 @@
 package com.zdotavv.enterprise_homework3.controller;
 
-import com.zdotavv.enterprise_homework3.collection.exceptions.NotFoundException;
-import com.zdotavv.enterprise_homework3.model.Cart;
+import com.zdotavv.enterprise_homework3.exceptions.NotFoundException;
 import com.zdotavv.enterprise_homework3.model.Person;
 import com.zdotavv.enterprise_homework3.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +15,28 @@ import java.util.Collection;
     @Autowired
     private PersonService personService;
 
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
+
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.OK)
     public Person createPerson(@RequestBody Person person){
-    return personService.createPerson(person);
+        return personService.createPerson(person);
     }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public Person getPersonById(@RequestParam Integer id) throws NotFoundException {
-       return personService.getPersonById(Integer.valueOf(id));
+        return personService.getPersonById(id);
     }
-    @PutMapping("/update")
+
+    @PutMapping ("/update")
     @ResponseStatus(HttpStatus.OK)
-    public Person updatePerson(@RequestBody Person person) throws NotFoundException {
-        return personService.updatePerson(person);
+    public Person updatePerson(@RequestParam Integer id, @RequestBody Person person) throws NotFoundException {
+        return personService.updatePerson(id, person);
     }
+
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePerson(@RequestParam Integer id) throws NotFoundException {
@@ -40,7 +46,6 @@ import java.util.Collection;
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public Collection<Person> getAll() {
-        return personService.getAllPerson();
+        return personService.getAllPersons();
     }
-
 }

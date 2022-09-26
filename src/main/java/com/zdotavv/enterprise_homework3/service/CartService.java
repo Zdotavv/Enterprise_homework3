@@ -1,24 +1,22 @@
 package com.zdotavv.enterprise_homework3.service;
 
+import com.zdotavv.enterprise_homework3.exceptions.NotFoundException;
 import com.zdotavv.enterprise_homework3.model.Cart;
 
 import java.util.List;
-import java.util.Set;
 
 public interface CartService {
-    Cart createCart(Cart cart);
+    Cart createCartByPersonId(Integer id) throws NotFoundException;
 
-    Cart updateCart(Cart cart);
+    Cart addProductByProductIdAndCartId(Integer productId, Integer idCart) throws NotFoundException;
 
-    void deleteCart(Cart cart);
+    Cart removeProductByProductIdAndCartId(Integer productId, Integer idCart) throws NotFoundException;
 
-    Cart getById(Integer id);
+    void removeAllProductsFromCartById(Integer idCart) throws NotFoundException;
 
-    Set<Cart> getAll();
+    List<Cart> getAllByPersonId(Integer id) throws NotFoundException;
 
-    Cart addProductToCart(Integer id, Integer idProduct);
+    Cart getCartById(Integer id) throws NotFoundException;
 
-    Cart deleteProductFromCart(Integer id, Integer idProduct);
-
-    Double getPriceInCard(Integer id);
+    void removeCartById(Integer id) throws NotFoundException;
 }

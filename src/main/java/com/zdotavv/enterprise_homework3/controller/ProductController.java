@@ -1,11 +1,13 @@
 package com.zdotavv.enterprise_homework3.controller;
 
+import com.zdotavv.enterprise_homework3.exceptions.NotFoundException;
 import com.zdotavv.enterprise_homework3.model.Product;
 import com.zdotavv.enterprise_homework3.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.Collection;
 
 @RequestMapping(path="/product")
 @RestController
@@ -14,27 +16,32 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/create")
-    public Product createProduct(@RequestBody Product product) {
+    @ResponseStatus(HttpStatus.OK)
+    public Product createProduct(@RequestBody Product product){
         return productService.createProduct(product);
     }
 
-    @PutMapping("/update")
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public Product getProductById(@RequestParam Integer idProduct) throws NotFoundException {
+        return productService.getById(idProduct);
+    }
+
+    @PutMapping ("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public Product updateProduct(@RequestParam Integer idProduct, @RequestBody Product product) throws NotFoundException {
+        return productService.updateProduct(idProduct, product);
     }
 
     @DeleteMapping("/delete")
-    public void deleteProduct(@RequestBody Product product) {
-        productService.deleteProduct(product);
-    }
-
-    @GetMapping("/{id}")
-    public Product getById(@PathVariable int id) {
-        return productService.getById(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@RequestParam Integer idProduct) throws NotFoundException {
+        productService.deleteProduct(idProduct);
     }
 
     @GetMapping("/all")
-    public Set<Product> getAll() {
-        return productService.getAll();
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Product> getAll() {
+        return productService.getAllProducts();
     }
 }

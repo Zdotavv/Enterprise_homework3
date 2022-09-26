@@ -1,11 +1,14 @@
 package com.zdotavv.enterprise_homework3.collection;
 
 import com.zdotavv.enterprise_homework3.model.Cart;
-import com.zdotavv.enterprise_homework3.model.Person;
+import lombok.Getter;
+import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
+@Component
+@Getter
 public class CartCollection {
-    public static Set<Cart> carts=new HashSet<>();
+    private final Map<Integer, Cart> carts = new HashMap<>();
 }
